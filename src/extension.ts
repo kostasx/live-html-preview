@@ -1,7 +1,6 @@
 'use strict';
 import * as vscode from 'vscode';
 import * as Constants from './Constants'
-import PreviewManager from './PreviewManager'
 import Utilities from './Utilities'
 import StatusBarItem from './StatusBarItem'
 const opn = require('opn');
@@ -17,12 +16,12 @@ export function activate(context: vscode.ExtensionContext) {
     // Register the commands that are provided to the user
     let disposableSidePreview = vscode.commands.registerCommand('extension.sidePreview', () => {
 
-        utilities.init(vscode.ViewColumn.Two, context, previewUri);
+        utilities.init(vscode.ViewColumn.Two);
 
     });
     let disposableStandalonePreview = vscode.commands.registerCommand('extension.fullPreview', () => {
 
-        utilities.init(vscode.ViewColumn.One, context, previewUri);
+        utilities.init(vscode.ViewColumn.One);
 
     });
 

@@ -1,6 +1,5 @@
 # Live HTML Previewer
 This extension allows you to preview your html files in VS Code itself. Use it to quickly set the html and css right for your webpages.
-##### Note: Javascript is not supported in preview
 ### Features
 #### Side preview with live editing
 ![IDE](Resources/Images/SidePreview.gif)
@@ -15,3 +14,5 @@ This extension allows you to preview your html files in VS Code itself. Use it t
     * right click in the editor/side bar, select "Open in browser"
 
 If a HTML file is open, a message is displayed on the Status Bar in bottom left. Click on it for side preview.
+### Changelog
+* 27/06/2019 Switched to WebView API with fully functiononal HTML and JavaScript preview

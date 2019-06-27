@@ -1,11 +1,21 @@
 "use strict"
 import * as vscode from 'vscode';
-import PreviewManager from './PreviewManager'
 import * as Constants from './Constants'
 
 export default class Utilities {
+
+    panel: any;
+    editor: any;
+
     //returns true if an html document is open
     constructor() { };
+
+    handleTextDocumentChange(){
+
+        this.panel.webview.html = this.editor.document.getText();
+
+    }
+
     checkDocumentIsHTML(showWarning: boolean): boolean {
         let result = vscode.window.activeTextEditor.document.languageId.toLowerCase() === "html"
         if (!result && showWarning) {
@@ -13,13 +23,34 @@ export default class Utilities {
         }
         return result;
     }
-    init(viewColumn: number, context: vscode.ExtensionContext, previewUri: vscode.Uri) {
+    init(viewColumn: number) {
         let proceed = this.checkDocumentIsHTML(true);
         if (proceed) {
-            let previewManager = new PreviewManager();
-            let registration = vscode.workspace.registerTextDocumentContentProvider('HTMLPreview', previewManager.htmlDocumentContentProvider);
-            return vscode.commands.executeCommand('vscode.previewHtml', previewUri, viewColumn).then((success) => {
-            });
+
+            // Create and show a new webview
+            this.panel = vscode.window.createWebviewPanel(
+                'liveHTMLPreviewer', 
+                'Live HTML Previewer', 
+                viewColumn,
+                {
+                    // Enable scripts in the webview
+                    enableScripts: true
+                } 
+            );
+
+            // And set its HTML content
+            this.editor = vscode.window.activeTextEditor;
+            let currentHTMLContent = this.editor.document.getText();
+            this.panel.webview.html = currentHTMLContent;
+
+            vscode.workspace.onDidChangeTextDocument(this.handleTextDocumentChange.bind(this));
+
+            // this.panel.onDidDispose(
+            //     () => { /* When the panel is closed... */ },
+            //     null,
+            //     context.subscriptions
+            // );
+            
         }
     }
 
